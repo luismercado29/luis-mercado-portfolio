@@ -69,7 +69,7 @@ const L = (v: string | { es: string; en: string }) => (typeof v === "string" ? {
         <div class="avatar">
           {site.photo ? <img src={site.photo} alt={site.fullName} width="128" height="128" /> : <Pixel name="avatar" size={104} label={site.fullName} />}
         </div>
-        <h1><T es="Hola, soy" en="Hi, I'm" /> <span style="white-space:nowrap">{site.firstName} <span class="wave" aria-hidden="true">👋</span></span></h1>
+        <h1><T es="Hola, soy" en="Hi, I'm" /> <span class="nowrap">{site.firstName} <span class="wave" aria-hidden="true">👋</span></span></h1>
         <p class="role"><T t={site.role} /></p>
         <div class="divider"></div>
         <p class="intro"><T t={site.intro} /></p>
@@ -84,7 +84,7 @@ const L = (v: string | { es: string; en: string }) => (typeof v === "string" ? {
         </div>
       </div>
 
-      <div class="desk" data-reveal style="--d:.15s">
+      <div class="desk" data-reveal data-delay="2">
         <Window title="notas.txt" icon="doc" tone="forest" class="notes floaty floaty--slow">
           <strong><T es="Pendientes para hoy:" en="To-do today:" /></strong>
           <ul>
@@ -125,7 +125,7 @@ const L = (v: string | { es: string; en: string }) => (typeof v === "string" ? {
     </div>
     <div class="projects-grid">
       {projects.map((pr, i) => (
-        <article class="win project-card" data-category={pr.category} data-reveal style={`--d:${(i % 2) * 0.12}s`}>
+        <article class="win project-card" data-category={pr.category} data-reveal data-delay={String(i % 2)}>
           <div class="win__bar">
             <span class="win__title"><Pixel name="computer" size={18} />{pr.file}</span>
             <span class="win__controls" aria-hidden="true"><span class="wc wc--min"></span><span class="wc wc--max"></span><span class="wc wc--close"></span></span>
@@ -180,7 +180,7 @@ const L = (v: string | { es: string; en: string }) => (typeof v === "string" ? {
         </div>
       </article>
 
-      <article class="cassette" data-reveal style="--d:.12s" data-cassette>
+      <article class="cassette" data-reveal data-delay="1" data-cassette>
         <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
         <div class="cassette-label">
           <div class="term-icon" aria-hidden="true">&gt;_</div>
@@ -283,7 +283,7 @@ const L = (v: string | { es: string; en: string }) => (typeof v === "string" ? {
     </div>
     <div class="contact-grid">
       {contacts.map((c, i) => (
-        <article class:list={["win contact-card", `contact-card--${c.tone}`]} data-reveal style={`--d:${i * 0.1}s`}>
+        <article class:list={["win contact-card", `contact-card--${c.tone}`]} data-reveal data-delay={String(i)}>
           <span class="side-tab" aria-hidden="true"></span>
           <div class="win__bar">
             <span class="win__title"><T t={L(c.title)} /></span>
