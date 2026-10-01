@@ -1,0 +1,8 @@
+---
+// Texto bilingüe: se muestra el idioma activo según <html lang>.
+interface Props { es: string; en: string; t?: { es: string; en: string } }
+const { t } = Astro.props;
+const es = t?.es ?? Astro.props.es;
+const en = t?.en ?? Astro.props.en;
+---
+<span class="i18n-es">{es}</span><span class="i18n-en" lang="en">{en}</span>

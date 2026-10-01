@@ -1,0 +1,61 @@
+---
+// Decoraciones pixel-art propias: enredadera, margaritas y escena de Cartagena.
+interface Props { kind: "vine" | "daisies" | "cartagena"; class?: string; size?: number }
+const { kind, class: cls = "", size = 120 } = Astro.props;
+
+type Px = [number, number, string];
+const px: Px[] = [];
+const stamp = (pattern: string[], ox: number, oy: number, colors: Record<string, string>) => {
+  pattern.forEach((row, y) => [...row].forEach((c, x) => { if (colors[c]) px.push([ox + x, oy + y, colors[c]]); }));
+};
+const leafC = { a: "#3f9b4a", b: "#2a6b35", c: "#7cc464", k: "#163d1e" };
+const leaf = ["..k..", ".kak.", "kcabk", "kaabk", ".kbk.", "..k.."];
+const leafL = ["..kk", ".kcak", "kcaabk", "kaabk.", ".kbk..", "..k..."];
+const flower = ["..k..", ".kwk.", "kwywk", ".kwk.", "..k.."];
+const flowerC = { k: "#5b4a2a", w: "#fbf6e6", y: "#f0b72f" };
+
+let w = 0, h = 0;
+if (kind === "vine") {
+  w = 22; h = 64;
+  for (let y = 0; y < 60; y++) {
+    const x = 10 + Math.round(Math.sin(y / 6) * 2);
+    px.push([x, y, "#2a6b35"]);
+    if (y % 9 === 4) stamp(y % 18 === 4 ? leaf : leafL, y % 18 === 4 ? x + 1 : x - 6, y, leafC);
+  }
+  stamp(["..kk..", ".kcak.", "kcaabk", "kaaabk", "kaabbk", ".kbbk.", "..kk.."], 7, 57, leafC);
+} else if (kind === "daisies") {
+  w = 44; h = 48;
+  const stems: [number, number, number][] = [[8, 14, 48], [18, 6, 48], [28, 18, 48], [36, 10, 48], [13, 26, 48]];
+  stems.forEach(([x, y0, y1]) => { for (let y = y0; y < y1; y++) px.push([x + Math.round(Math.sin(y / 5)), y, "#2a6b35"]); });
+  [[1, 30], [20, 28], [30, 34], [6, 40], [24, 40], [35, 24], [12, 18]].forEach(([x, y]) => stamp(leafL, x, y, leafC));
+  stems.forEach(([x, y0]) => stamp(flower, x - 2 + Math.round(Math.sin(y0 / 5)), y0 - 4, flowerC));
+} else {
+  w = 64; h = 40;
+  const sky = ["#2d2a5e", "#4a3570", "#7b3f78", "#b4507a", "#e0706a", "#f39a5b", "#f7c26b"];
+  sky.forEach((c, i) => { for (let y = i * 3; y < i * 3 + 3; y++) for (let x = 0; x < w; x++) px.push([x, y, c]); });
+  // sol
+  for (let y = 12; y < 22; y++) for (let x = 36; x < 48; x++) { const dx = x - 41.5, dy = y - 21; if (dx * dx + dy * dy < 34) px.push([x, y, y % 3 === 0 ? "#f6b04a" : "#fde6a0"]); }
+  // mar
+  for (let y = 21; y < h; y++) for (let x = 0; x < w; x++) px.push([x, y, y < 25 ? "#2f7d95" : y < 31 ? "#215f78" : "#174a5f"]);
+  [[30, 23, 18], [34, 26, 12], [38, 29, 8], [10, 27, 6], [52, 24, 7]].forEach(([x, y, l]) => { for (let i = 0; i < l; i++) px.push([x + i, y, "#f3b56a"]); });
+  // murallas
+  for (let y = 26; y < h; y++) for (let x = 0; x < 30; x++) px.push([x, y, y === 26 ? "#d9a86a" : (x + y) % 7 === 0 ? "#9c6b3e" : "#b98653"]);
+  for (let x = 0; x < 30; x += 4) for (let y = 23; y < 26; y++) { px.push([x, y, "#b98653"]); px.push([x + 1, y, "#b98653"]); }
+  // Torre del Reloj
+  for (let y = 10; y < 26; y++) for (let x = 10; x < 18; x++) px.push([x, y, x === 10 ? "#c99a63" : "#e3c38f"]);
+  for (let y = 6; y < 10; y++) for (let x = 11 + (y - 6) / 2; x < 17 - (y - 6) / 2; x++) px.push([Math.floor(x), y, "#e3c38f"]);
+  [[13, 4], [14, 4], [13, 5], [14, 5]].forEach(([x, y]) => px.push([x, y, "#d9a86a"]));
+  for (let y = 12; y < 16; y++) for (let x = 12; x < 16; x++) px.push([x, y, (x === 12 || x === 15 || y === 12 || y === 15) ? "#7a4a2a" : "#fbf6e6"]);
+  px.push([13, 13, "#1b1b18"], [14, 14, "#1b1b18"]);
+  for (let y = 19; y < 26; y++) for (let x = 12; x < 16; x++) px.push([x, y, "#3a2618"]);
+  // palmera
+  for (let y = 14; y < 26; y++) px.push([24 + (y < 18 ? 1 : 0), y, "#5a3a1e"]);
+  [[-5, 1], [-4, 0], [-3, -1], [-2, -1], [-1, 0], [1, 0], [2, -1], [3, -1], [4, 0], [5, 1], [-3, 2], [3, 2], [0, -1], [-1, 1], [1, 1]].forEach(([dx, dy]) => px.push([25 + dx, 14 + dy, "#2a6b35"]));
+  // gaviotas
+  [[50, 6], [51, 5], [52, 6], [56, 9], [57, 8], [58, 9]].forEach(([x, y]) => px.push([x, y, "#2d2a5e"]));
+}
+const height = Math.round((size * h) / w);
+---
+<svg class:list={["decor", `decor--${kind}`, cls]} width={size} height={height} viewBox={`0 0 ${w} ${h}`} shape-rendering="crispEdges" aria-hidden="true" preserveAspectRatio={kind === "cartagena" ? "xMidYMid slice" : undefined}>
+  {px.map(([x, y, f]) => <rect x={x} y={y} width="1" height="1" fill={f} />)}
+</svg>

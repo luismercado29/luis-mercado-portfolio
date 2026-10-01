@@ -1,0 +1,58 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Window from "../../components/Window.astro";
+import TechIcon from "../../components/TechIcon.astro";
+import Decor from "../../components/Decor.astro";
+import T from "../../components/T.astro";
+import { projects, categories, site } from "../../data/site";
+
+export function getStaticPaths() {
+  return projects.map((p, i) => ({ params: { slug: p.slug }, props: { i } }));
+}
+const { i } = Astro.props;
+const pr = projects[i];
+const prev = projects[(i - 1 + projects.length) % projects.length];
+const next = projects[(i + 1) % projects.length];
+const cat = categories.find((c) => c.id === pr.category)!.label;
+---
+<Layout title={`${pr.title.es} | ${site.name}`} description={pr.summary.es}>
+  <section class="detail" id="proyecto">
+    <Decor kind="vine" class="decor-vine" size={60} />
+    <Window title={pr.file} icon="computer" class="detail-win">
+      <div class="shot detail-shot"><img src={pr.cover} alt={`Captura de ${pr.title.es}`} width="1280" height="720" /></div>
+      <div class="detail-body">
+        <div>
+          <h1><T t={pr.title} /></h1>
+          <span class="detail-role"><T t={pr.role} /></span>
+          <p><T t={pr.description} /></p>
+          <h2><T es="Funcionalidades clave" en="Key features" /></h2>
+          <ul class="features">
+            {pr.features.es.map((f, k) => (
+              <li><T es={f} en={pr.features.en[k]} /></li>
+            ))}
+          </ul>
+        </div>
+        <aside class="side-panel">
+          <div class="panel">
+            <h3>STATUS</h3>
+            <p style="margin:0;display:flex;align-items:center;gap:10px"><span class="led"></span><T t={pr.status} /> · <T t={cat} /> · {pr.year}</p>
+          </div>
+          <div class="panel">
+            <h3>STACK</h3>
+            <div class="stack-list">{pr.stack.map((s) => <span class="tech"><TechIcon name={s} size={18} />{s}</span>)}</div>
+          </div>
+          <div class="detail-actions">
+            {pr.demo && <a class="btn btn--primary" href={pr.demo} target="_blank" rel="noopener">▶ <T es={pr.slug === "amaxoft" ? "Visitar sitio" : "Ver demo en vivo"} en={pr.slug === "amaxoft" ? "Visit website" : "Live demo"} /> ↗</a>}
+            {pr.repo && <a class="btn" href={pr.repo} target="_blank" rel="noopener"><T es="Ver código en GitHub" en="View code on GitHub" /> ↗</a>}
+            {!pr.repo && <p style="margin:0;font-size:.85rem"><T es="🔒 Código privado de la empresa." en="🔒 Private company codebase." /></p>}
+            <a class="btn" href="/#proyectos">← <T es="Volver a proyectos" en="Back to projects" /></a>
+          </div>
+        </aside>
+      </div>
+    </Window>
+    <nav class="pager" aria-label="Más proyectos">
+      <a class="btn btn--sm" href={`/proyectos/${prev.slug}`}>← <T t={prev.title} /></a>
+      <a class="btn btn--sm" href={`/proyectos/${next.slug}`}><T t={next.title} /> →</a>
+    </nav>
+  </section>
+</Layout>

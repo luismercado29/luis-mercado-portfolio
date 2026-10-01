@@ -1,0 +1,378 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Window from "../components/Window.astro";
+import Pixel from "../components/Pixel.astro";
+import TechIcon from "../components/TechIcon.astro";
+import Decor from "../components/Decor.astro";
+import T from "../components/T.astro";
+import { site, projects, categories, stack, timeline } from "../data/site";
+
+const terminal = {
+  es: [
+    ["cmd", "whoami"],
+    ["info", `luis-mercado · Full-Stack Developer (${site.location})`],
+    ["gap", ""],
+    ["cmd", `git clone github.com/${site.githubUser}`],
+    ["ok", `✔ ${projects.length} proyectos encontrados`],
+    ["ok", "✔ ERP · IA · Datos · Web"],
+    ["gap", ""],
+    ["cmd", "cat stack.txt"],
+    ["out", "Next.js  React  TypeScript  Spring Boot  Python"],
+    ["gap", ""],
+    ["cmd", "vercel --prod"],
+    ["info", "▶ Desplegado en producción"],
+    ["gap", ""],
+    ["ok", "✓ Listo para tu próximo proyecto"],
+  ],
+  en: [
+    ["cmd", "whoami"],
+    ["info", `luis-mercado · Full-Stack Developer (${site.location})`],
+    ["gap", ""],
+    ["cmd", `git clone github.com/${site.githubUser}`],
+    ["ok", `✔ ${projects.length} projects found`],
+    ["ok", "✔ ERP · AI · Data · Web"],
+    ["gap", ""],
+    ["cmd", "cat stack.txt"],
+    ["out", "Next.js  React  TypeScript  Spring Boot  Python"],
+    ["gap", ""],
+    ["cmd", "vercel --prod"],
+    ["info", "▶ Deployed to production"],
+    ["gap", ""],
+    ["ok", "✓ Ready for your next project"],
+  ],
+};
+
+const fwGroups = [
+  { id: "frontend", label: "Frontend", items: stack.frameworks.frontend },
+  { id: "backend", label: "Backend", items: stack.frameworks.backend },
+  { id: "data", label: { es: "Datos", en: "Data" }, items: stack.frameworks.data },
+];
+
+const contacts = [
+  { tone: "purple", title: "GitHub", icon: "github", text: { es: `github.com/${site.githubUser}`, en: `github.com/${site.githubUser}` }, href: site.github, cta: { es: "Visitar perfil", en: "Visit profile" }, ext: true },
+  { tone: "red", title: { es: "Correo", en: "Email" }, icon: "mail", text: { es: site.email, en: site.email }, href: `mailto:${site.email}`, cta: { es: "Enviar correo", en: "Send email" } },
+  ...(site.linkedin ? [{ tone: "blue", title: "LinkedIn", icon: "linkedin", text: { es: "Conectemos profesionalmente", en: "Let's connect professionally" }, href: site.linkedin, cta: { es: "Ver perfil", en: "View profile" }, ext: true }] : []),
+  { tone: "green", title: { es: "Hoja de vida", en: "Résumé" }, icon: "doc", text: { es: "Descarga mi CV en PDF", en: "Download my CV (PDF, Spanish)" }, href: site.cv, cta: { es: "Ver CV", en: "View CV" }, ext: true },
+];
+const L = (v: string | { es: string; en: string }) => (typeof v === "string" ? { es: v, en: v } : v);
+---
+<Layout
+  home
+  title={`${site.name} | Portafolio`}
+  description={`Portafolio de ${site.fullName}, Ingeniero de Sistemas y desarrollador Full-Stack en ${site.location}. Proyectos con Next.js, React, TypeScript, Java/Spring Boot, Python e IA.`}
+>
+  <!-- ================= INICIO ================= -->
+  <section class="section hero" id="inicio">
+    <Decor kind="daisies" class="decor-daisies" size={130} />
+    <div class="container hero-grid">
+      <div data-reveal>
+        <div class="avatar">
+          {site.photo ? <img src={site.photo} alt={site.fullName} width="128" height="128" /> : <Pixel name="avatar" size={104} label={site.fullName} />}
+        </div>
+        <h1><T es="Hola, soy" en="Hi, I'm" /> <span style="white-space:nowrap">{site.firstName} <span class="wave" aria-hidden="true">👋</span></span></h1>
+        <p class="role"><T t={site.role} /></p>
+        <div class="divider"></div>
+        <p class="intro"><T t={site.intro} /></p>
+        <p class="meta">
+          <span>{site.location}</span>
+          <span><T es="Disponible para proyectos" en="Open to opportunities" /></span>
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn--primary" href="#proyectos">▶ <T es="Ver proyectos" en="View projects" /></a>
+          <a class="btn" href="#contacto">✉ <T es="Contactar" en="Contact" /></a>
+          <a class="btn" href={site.cv} target="_blank" rel="noopener"><Pixel name="doc" size={20} /> CV</a>
+        </div>
+      </div>
+
+      <div class="desk" data-reveal style="--d:.15s">
+        <Window title="notas.txt" icon="doc" tone="forest" class="notes floaty floaty--slow">
+          <strong><T es="Pendientes para hoy:" en="To-do today:" /></strong>
+          <ul>
+            <li class="done"><T es="Facturación DIAN" en="DIAN e-invoicing" /></li>
+            <li><T es="Revisar PRs" en="Review PRs" /></li>
+            <li><T es="Dashboard de ventas" en="Sales dashboard" /></li>
+            <li><T es="Deploy a Vercel" en="Deploy to Vercel" /></li>
+            <li><T es="Más café ☕" en="More coffee ☕" /></li>
+          </ul>
+        </Window>
+        <Window tone="paper" class="terminal" title="">
+          <span slot="title">luis@portfolio:~</span>
+          <div class="term" data-terminal aria-label="Terminal" role="img">
+            <script type="application/json" data-terminal-lines set:html={JSON.stringify(terminal)} />
+            <noscript>
+              {terminal.es.map(([k, t]) => <div class:list={["term-line", k]}>{k === "cmd" ? `$ ${t}` : t}</div>)}
+            </noscript>
+          </div>
+        </Window>
+        <Window title="cartagena.bmp" icon="computer" tone="forest" class="scene floaty">
+          <Decor kind="cartagena" size={230} />
+        </Window>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROYECTOS ================= -->
+  <section class="section" id="proyectos">
+    <Decor kind="vine" class="decor-vine" size={66} />
+    <div class="section-head" data-reveal>
+      <Pixel name="folder" size={44} />
+      <h2><T es="Proyectos" en="Projects" /></h2>
+    </div>
+    <div class="filters" role="group" aria-label="Filtrar proyectos" data-reveal>
+      {categories.map((c, i) => (
+        <button class="chip-btn" type="button" data-filter={c.id} aria-pressed={i === 0 ? "true" : "false"}><T t={c.label} /></button>
+      ))}
+    </div>
+    <div class="projects-grid">
+      {projects.map((pr, i) => (
+        <article class="win project-card" data-category={pr.category} data-reveal style={`--d:${(i % 2) * 0.12}s`}>
+          <div class="win__bar">
+            <span class="win__title"><Pixel name="computer" size={18} />{pr.file}</span>
+            <span class="win__controls" aria-hidden="true"><span class="wc wc--min"></span><span class="wc wc--max"></span><span class="wc wc--close"></span></span>
+          </div>
+          <div class="win__body">
+            <a class="shot" href={`/proyectos/${pr.slug}`} tabindex="-1" aria-hidden="true">
+              <span class="year">{pr.year}</span>
+              <img src={pr.cover} alt="" loading="lazy" width="1280" height="720" />
+            </a>
+            <div class="card-body">
+              <div class="card-head">
+                <h3><T t={pr.title} /></h3>
+                <span class="tag"><span class="led" title={pr.status.es}></span><b><T t={categories.find((c) => c.id === pr.category)!.label} /></b></span>
+              </div>
+              <p><T t={pr.summary} /></p>
+              <div class="chips">{pr.stack.slice(0, 6).map((s) => <span><TechIcon name={s} size={14} />{s}</span>)}</div>
+              <div class="card-actions">
+                <a class="btn btn--primary btn--sm" href={`/proyectos/${pr.slug}`}><T es="Ver proyecto" en="View project" /> ▶</a>
+                {pr.demo && <a class="btn btn--sm" href={pr.demo} target="_blank" rel="noopener">Demo ↗</a>}
+                {pr.repo && <a class="btn btn--sm" href={pr.repo} target="_blank" rel="noopener"><T es="Código" en="Code" /> ↗</a>}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+    <p class="empty-msg" data-empty hidden><T es="No hay proyectos en esta categoría todavía." en="No projects in this category yet." /></p>
+  </section>
+
+  <!-- ================= TECNOLOGÍAS ================= -->
+  <section class="section" id="stack">
+    <div class="section-head" data-reveal>
+      <Pixel name="floppy" size={44} />
+      <h2><T es="Tecnologías" en="Tech Stack" /></h2>
+    </div>
+    <div class="stack-grid">
+      <article class="floppy" data-reveal>
+        <div class="floppy-label">
+          <div class="floppy-doc" aria-hidden="true">&lt;/&gt;</div>
+          <div class="floppy-text">
+            <span class="stack-label">01 /</span>
+            <h3 class="stack-title"><T es="Lenguajes" en="Languages" /></h3>
+            <p><T es="La base de todo lo que construyo." en="The foundation of everything I build." /></p>
+          </div>
+        </div>
+        <div class="floppy-chips">
+          {stack.languages.map((l) => <span class="tech"><TechIcon name={l} />{l}</span>)}
+        </div>
+        <div class="floppy-shutter" aria-hidden="true">
+          <div class="shutter"></div>
+          <div class="wp-tab">↓</div>
+        </div>
+      </article>
+
+      <article class="cassette" data-reveal style="--d:.12s" data-cassette>
+        <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+        <div class="cassette-label">
+          <div class="term-icon" aria-hidden="true">&gt;_</div>
+          <div>
+            <span class="stack-label">02 /</span>
+            <h3 class="stack-title">Frameworks</h3>
+            <p><T es="Aceleradores para crear software moderno y escalable." en="Accelerators to build modern, scalable software." /></p>
+          </div>
+          <div class="minutes">120<small>min</small></div>
+        </div>
+        <div class="tape-window" aria-hidden="true">
+          <span class="reel"></span><span class="tape"></span><span class="reel"></span>
+        </div>
+        {fwGroups.map((g, i) => (
+          <div class="fw-chips" id={`fw-${g.id}`} role="tabpanel" hidden={i !== 0}>
+            {g.items.map((it) => <span class="tech"><TechIcon name={it} />{it}</span>)}
+          </div>
+        ))}
+        <div class="cassette-controls" role="tablist" aria-label="Frameworks">
+          <span class="play" aria-hidden="true">▶</span>
+          {fwGroups.map((g, i) => (
+            <button class="tab-key" type="button" role="tab" aria-controls={`fw-${g.id}`} aria-selected={i === 0 ? "true" : "false"} data-tab={g.id}><T t={L(g.label)} /></button>
+          ))}
+        </div>
+      </article>
+
+      <div class="pegboard-wrap" data-reveal>
+        <div class="pegboard-head">
+          <div class="term-icon" aria-hidden="true">⚙</div>
+          <div>
+            <span class="stack-label">03 /</span>
+            <h3 class="stack-title"><T es="Herramientas" en="Tools" /></h3>
+          </div>
+        </div>
+        <div class="pegboard">
+          <div class="tools-grid">
+            {stack.tools.map((t) => <span class="tool"><TechIcon name={t} size={40} />{t}</span>)}
+          </div>
+        </div>
+        <div class="shelf"><span class="shelf-label"><T es="Mis aliadas del día a día" en="My everyday allies" /></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOBRE MÍ ================= -->
+  <section class="section" id="sobre-mi">
+    <div class="section-head" data-reveal>
+      <Pixel name="person" size={44} />
+      <h2><T es="Sobre mí" en="About me" /></h2>
+    </div>
+    <Window tone="paper" class="about-win" title="">
+      <span slot="title"><Pixel name="doc" size={18} /> <T es="Descripción.txt - Bloc de notas" en="About.txt - Notepad" /></span>
+      <div class="menubar" aria-hidden="true">
+        <span><T es="Archivo" en="File" /></span><span><T es="Editar" en="Edit" /></span><span><T es="Formato" en="Format" /></span><span><T es="Ver" en="View" /></span><span><T es="Ayuda" en="Help" /></span>
+      </div>
+      <div class="about-body" data-reveal>
+        <div class="about-art">
+          <Pixel name="computer" size={190} />
+        </div>
+        <div>
+          <p class="i18n-es">Soy <strong>{site.fullName}</strong>, Ingeniero de Sistemas y desarrollador Full-Stack de Cartagena. Hoy construyo la plataforma <strong>ERP SaaS de AMAXOFT</strong>: módulos de ventas, POS, facturación electrónica DIAN, contabilidad y dashboards para operaciones multiempresa.</p>
+          <p class="i18n-en" lang="en">I'm <strong>{site.fullName}</strong>, a Systems Engineer and Full-Stack developer from Cartagena, Colombia. Today I build <strong>AMAXOFT's SaaS ERP</strong>: sales, POS, DIAN e-invoicing, accounting and dashboard modules for multi-company operations.</p>
+          <p class="i18n-es">Vengo del mundo <strong>Java/Spring Boot</strong> —APIs REST con JWT/OAuth2, microservicios y Oracle— y hoy trabajo sobre todo con <strong>Next.js, React y TypeScript</strong>, integrando inteligencia artificial y despliegue continuo. Me gusta participar en todo el ciclo: entender la necesidad, diseñar la solución y llevarla a producción.</p>
+          <p class="i18n-en" lang="en">I come from the <strong>Java/Spring Boot</strong> world —REST APIs with JWT/OAuth2, microservices and Oracle— and now work mostly with <strong>Next.js, React and TypeScript</strong>, integrating AI and continuous delivery. I enjoy the whole cycle: understanding the need, designing the solution and shipping it to production.</p>
+          <p><T es="Me caracterizo por mi autonomía, aprendo rápido y me comprometo con entregar trabajo de calidad, con comunicación clara y buen trabajo en equipo." en="I'm autonomous, a fast learner and committed to delivering quality work, with clear communication and strong teamwork." /></p>
+          <div class="facts">
+            <span>🏆 <T es="Ganador TECNONUÑEZ 2023" en="TECNONUÑEZ 2023 winner" /></span>
+            <span>🧾 <T es="Facturación DIAN" en="DIAN e-invoicing" /></span>
+            <span>🤖 <T es="Integración de IA" en="AI integration" /></span>
+            <span>🏢 <T es="SaaS multiempresa" en="Multi-tenant SaaS" /></span>
+          </div>
+        </div>
+      </div>
+      <div class="statusbar"><span class="led"></span><T es="LISTO" en="READY" /></div>
+    </Window>
+
+    <h3 class="timeline-title" data-reveal><T es="Experiencia y formación" en="Experience & education" /></h3>
+    <div class="timeline">
+      {timeline.map((e) => (
+        <div class:list={["log", e.kind]} data-reveal>
+          <div class="log-date"><Pixel name="calendar" size={28} /><T t={e.date} /></div>
+          <article class="log-card">
+            <span class="win__controls" aria-hidden="true"><span class="wc wc--min"></span><span class="wc wc--max"></span><span class="wc wc--close"></span></span>
+            <span class="log-file">{e.file}</span>
+            <h4><T t={e.title} /></h4>
+            <p class="log-org">{e.org}</p>
+            <p><T t={e.text} /></p>
+          </article>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ================= CONTACTO ================= -->
+  <section class="section" id="contacto">
+    <div class="section-head" data-reveal>
+      <Pixel name="mail" size={44} />
+      <h2><T es="Contacto" en="Contact" /></h2>
+      <p><T es="¿Tienes un proyecto o una oportunidad? Escríbeme, respondo rápido." en="Have a project or an opportunity? Drop me a line, I reply fast." /></p>
+    </div>
+    <div class="contact-grid">
+      {contacts.map((c, i) => (
+        <article class:list={["win contact-card", `contact-card--${c.tone}`]} data-reveal style={`--d:${i * 0.1}s`}>
+          <span class="side-tab" aria-hidden="true"></span>
+          <div class="win__bar">
+            <span class="win__title"><T t={L(c.title)} /></span>
+            <span class="win__controls" aria-hidden="true"><span class="wc wc--close"></span></span>
+          </div>
+          <div class="win__body">
+            <Pixel name={c.icon} size={140} />
+            <span class="handle"><T t={c.text} /></span>
+            <span class="sep"></span>
+            <a class="btn" href={c.href} target={c.ext ? "_blank" : undefined} rel={c.ext ? "noopener" : undefined}><T t={c.cta} /> <span class="arrow-box">→</span></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Terminal con efecto de tipeo
+  const term = document.querySelector<HTMLElement>("[data-terminal]");
+  const data = JSON.parse(document.querySelector("[data-terminal-lines]")?.textContent || "{}");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let run = 0;
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const line = (kind: string) => {
+    const el = document.createElement("div");
+    el.className = `term-line ${kind}`;
+    term!.appendChild(el);
+    return el;
+  };
+  async function play(lang: string, instant = false) {
+    if (!term) return;
+    const id = ++run;
+    term.querySelectorAll(".term-line, .cursor").forEach((n) => n.remove());
+    const cursor = document.createElement("span");
+    cursor.className = "cursor";
+    for (const [kind, text] of data[lang] as [string, string][]) {
+      if (id !== run) return;
+      const el = line(kind);
+      if (kind === "cmd") {
+        el.innerHTML = '<span class="p">$</span> ';
+        if (instant) { el.append(text); continue; }
+        el.append(cursor);
+        for (const ch of text) {
+          if (id !== run) return;
+          cursor.before(ch);
+          await sleep(35 + Math.random() * 45);
+        }
+        await sleep(250);
+      } else {
+        el.textContent = text;
+        if (!instant) await sleep(kind === "gap" ? 80 : 220);
+      }
+    }
+    line("").append(Object.assign(document.createElement("span"), { className: "p", textContent: "$ " }), cursor);
+  }
+  const lang = () => document.documentElement.lang;
+  if (term) {
+    const io = new IntersectionObserver((es) => {
+      if (es[0].isIntersecting) { play(lang(), reduce); io.disconnect(); }
+    });
+    io.observe(term);
+    document.addEventListener("langchange", () => play(lang(), true));
+  }
+
+  // Filtros de proyectos
+  const btns = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+  const cards = document.querySelectorAll<HTMLElement>(".project-card");
+  const empty = document.querySelector<HTMLElement>("[data-empty]");
+  btns.forEach((b) => b.addEventListener("click", () => {
+    const f = b.dataset.filter;
+    btns.forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    let shown = 0;
+    cards.forEach((c) => {
+      const ok = f === "todos" || c.dataset.category === f;
+      c.hidden = !ok;
+      if (ok) { shown++; c.classList.add("is-visible"); }
+    });
+    if (empty) empty.hidden = shown > 0;
+  }));
+
+  // Pestañas del cassette
+  const cassette = document.querySelector<HTMLElement>("[data-cassette]");
+  cassette?.querySelectorAll<HTMLButtonElement>("[data-tab]").forEach((t, _, all) => t.addEventListener("click", () => {
+    all.forEach((x) => {
+      x.setAttribute("aria-selected", String(x === t));
+      document.getElementById(`fw-${x.dataset.tab}`)!.hidden = x !== t;
+    });
+    cassette.classList.add("is-playing");
+    setTimeout(() => cassette.classList.remove("is-playing"), 1200);
+  }));
+</script>
