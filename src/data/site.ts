@@ -14,7 +14,7 @@ export const site = {
   // Pega aquí tu URL de LinkedIn para que aparezca la tarjeta de contacto.
   linkedin: "",
   // Pon tu foto en /public (ej. "/foto.jpg") para reemplazar el avatar pixel-art.
-  photo: "",
+  photo: "/foto.jpg",
   cv: "/CV_Luis_Mercado.pdf",
   role: {
     es: "Ingeniero de Sistemas · Full-Stack Developer",
