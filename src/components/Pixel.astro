@@ -1,0 +1,25 @@
+---
+import { icons, palette } from "../data/pixels";
+interface Props { name: string; size?: number; class?: string; label?: string }
+const { name, size = 32, class: cls = "", label } = Astro.props;
+const grid = icons[name] ?? [];
+const h = grid.length;
+const w = Math.max(...grid.map((r) => r.length));
+// Agrupa píxeles contiguos del mismo color en un solo rect.
+const rects: { x: number; y: number; len: number; fill: string }[] = [];
+grid.forEach((row, y) => {
+  let x = 0;
+  while (x < row.length) {
+    const c = row[x];
+    if (c === "." || !palette[c]) { x++; continue; }
+    let len = 1;
+    while (row[x + len] === c) len++;
+    rects.push({ x, y, len, fill: palette[c] });
+    x += len;
+  }
+});
+const height = Math.round((size * h) / w);
+---
+<svg class:list={["pixel", cls]} width={size} height={height} viewBox={`0 0 ${w} ${h}`} shape-rendering="crispEdges" role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : "true"}>
+  {rects.map((r) => <rect x={r.x} y={r.y} width={r.len} height="1" fill={r.fill} />)}
+</svg>
