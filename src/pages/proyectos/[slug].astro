@@ -35,7 +35,7 @@ const cat = categories.find((c) => c.id === pr.category)!.label;
         <aside class="side-panel">
           <div class="panel">
             <h3>STATUS</h3>
-            <p style="margin:0;display:flex;align-items:center;gap:10px"><span class="led"></span><T t={pr.status} /> · <T t={cat} /> · {pr.year}</p>
+            <p class="status-line"><span class="led"></span><T t={pr.status} /> · <T t={cat} /> · {pr.year}</p>
           </div>
           <div class="panel">
             <h3>STACK</h3>
@@ -44,7 +44,7 @@ const cat = categories.find((c) => c.id === pr.category)!.label;
           <div class="detail-actions">
             {pr.demo && <a class="btn btn--primary" href={pr.demo} target="_blank" rel="noopener">▶ <T es={pr.slug === "amaxoft" ? "Visitar sitio" : "Ver demo en vivo"} en={pr.slug === "amaxoft" ? "Visit website" : "Live demo"} /> ↗</a>}
             {pr.repo && <a class="btn" href={pr.repo} target="_blank" rel="noopener"><T es="Ver código en GitHub" en="View code on GitHub" /> ↗</a>}
-            {!pr.repo && <p style="margin:0;font-size:.85rem"><T es="🔒 Código privado de la empresa." en="🔒 Private company codebase." /></p>}
+            {!pr.repo && <p class="private-note"><T es="🔒 Código privado de la empresa." en="🔒 Private company codebase." /></p>}
             <a class="btn" href="/#proyectos">← <T es="Volver a proyectos" en="Back to projects" /></a>
           </div>
         </aside>
