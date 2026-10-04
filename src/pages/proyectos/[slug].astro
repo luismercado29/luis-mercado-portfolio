@@ -49,6 +49,24 @@ const cat = categories.find((c) => c.id === pr.category)!.label;
           </div>
         </aside>
       </div>
+      {pr.gallery && pr.gallery.length > 0 && (
+        <section class="gallery" aria-labelledby="titulo-galeria">
+          <h2 id="titulo-galeria"><T es="Por dentro de la aplicación" en="Inside the app" /></h2>
+          <ul class="gallery-grid">
+            {pr.gallery.map((g) => (
+              <li>
+                <figure>
+                  <a href={g.src} target="_blank" rel="noopener" class="gallery-link">
+                    <img src={g.src} alt={g.alt.es} loading="lazy" decoding="async" width="1280" height="800" />
+                    <span class="sr-only"><T es="(abre la imagen completa en otra pestaña)" en="(opens the full image in a new tab)" /></span>
+                  </a>
+                  <figcaption><T t={g.alt} /></figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </Window>
     <nav class="pager" aria-label="Más proyectos">
       <a class="btn btn--sm" href={`/proyectos/${prev.slug}`}>← <T t={prev.title} /></a>
