@@ -120,7 +120,7 @@ export const projects: Project[] = [
     },
     stack: ["Next.js", "React", "TypeScript", "Tailwind", "PostgreSQL", "Drizzle", "Neon", "Leaflet", "Mapbox", "Vercel"],
     demo: "https://accidentalidad-cartagena.vercel.app",
-    repo: "https://github.com/luismercado29/accidentalidad-cartagena",
+    repo: "https://github.com/luismercado29/pulso-vial",
     year: "2026",
     gallery: [
       { src: "/projects/pulso-vial/02-consola.jpg", alt: { es: "Resumen de la consola: indicadores del periodo, mapa de calor e incidentes en curso", en: "Console overview: period KPIs, heatmap and ongoing incidents" } },
@@ -169,7 +169,7 @@ export const projects: Project[] = [
     },
     stack: ["Next.js", "React", "TypeScript", "Tailwind", "PostgreSQL", "Drizzle", "Neon", "GSAP", "Vercel"],
     demo: "https://aula-virtual-con-ia.vercel.app",
-    repo: "https://github.com/luismercado29/Aula-virtual-con-IA",
+    repo: "https://github.com/luismercado29/aula-ia",
     year: "2026",
     gallery: [
       { src: "/projects/aula-virtual-ia/02-inicio-personalizado.jpg", alt: { es: "Inicio personalizado con filas de recomendaciones", en: "Personalized home with recommendation rows" } },
@@ -216,7 +216,7 @@ export const projects: Project[] = [
     },
     stack: ["Python", "Django", "PostgreSQL", "Neon", "Leaflet", "Mapbox", "OpenStreetMap", "Vercel"],
     demo: "https://sistematizacion-sitm.vercel.app",
-    repo: "https://github.com/luismercado29/sistematizacionSITM",
+    repo: "https://github.com/luismercado29/sitm-cartagena",
     year: "2026",
     gallery: [
       { src: "/projects/sistematizacion-sitm/03-tablero.jpg", alt: { es: "Tablero de operación del despacho", en: "Dispatch operations dashboard" } },
